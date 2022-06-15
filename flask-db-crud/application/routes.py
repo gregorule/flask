@@ -1,9 +1,9 @@
 from application import app, db
 from application.models import Games
 
-@app.route('/add')
-def add():
-    new_game = Games(name="New Game")
+@app.route('/add/<new_game_name>')
+def add(new_game_name):
+    new_game = Games(name=new_game_name)
     db.session.add(new_game)
     db.session.commit()
     return "Added new game to database"
@@ -16,17 +16,17 @@ def read():
         games_string += "<br>"+ game.name
     return games_string
 
-@app.route('/update/<name>')
-def update(name):
-    first_game = Games.query.first()
-    first_game.name = name
+@app.route('/update/<old_name>/<new_name>')
+def update(old_name, new_name):
+    current_entry = Games(name = old_name)
+    current_entry.name = new_name
     db.session.commit()
-    return first_game.name
+    return current_entry.name
 
 @app.route('/delete/<name>')
 def delete(name):
-    name = Games.query.first()
-    db.session.delete(name)
+    to_be_delete = Games(name = name)
+    db.session.delete(to_be_delete)
     db.session.commit()
     return "Item has been deleted"
 
