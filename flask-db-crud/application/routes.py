@@ -18,17 +18,17 @@ def read():
 
 @app.route('/update/<old_name>/<new_name>')
 def update(old_name, new_name):
-    current_entry = Games(name = old_name)
+    current_entry = Games.query.filter_by(name = old_name).first()
     current_entry.name = new_name
     db.session.commit()
     return current_entry.name
 
-@app.route('/delete/<name>')
-def delete(name):
-    to_be_delete = Games(name = name)
+@app.route('/delete/<gname>')
+def delete(gname):
+    to_be_delete = .query.filter_by(name = gname).first()
     db.session.delete(to_be_delete)
     db.session.commit()
-    return "Item has been deleted"
+    return f"{to_be_delete} has been deleted"
 
 @app.route('/total')
 def total():
